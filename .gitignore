@@ -1,0 +1,13 @@
+/.gradle
+/.idea
+.DS_Store
+/captures
+/build
+/gradle
+/build.gradle
+/Cluedo.iml
+/gradle.properties
+/gradlew
+/gradlew.bat
+/local.properties
+/settings.gradle
