@@ -7,8 +7,13 @@ public class Player {
 
     private String name;
     private Game game;
-    private ArrayList<Possession> possessions;
-    private ArrayList<ArrayList<Card>> chances;
+    private ArrayList<Possession> possessions = new ArrayList<>();
+    private ArrayList<ArrayList<Card>> chances = new ArrayList<>();
+
+    public Player(String name, Game game) {
+        this.name = name;
+        this.game = game;
+    }
 
     public void setDoesntOwn(Card... cards) {
         for (Card card : cards) {
@@ -121,4 +126,11 @@ public class Player {
         return cardPossessions;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

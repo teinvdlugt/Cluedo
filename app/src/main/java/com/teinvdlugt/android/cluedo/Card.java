@@ -6,6 +6,11 @@ public class Card {
     private String name;
     private Game game;
 
+    public Card(String name, Game game) {
+        this.name = name;
+        this.game = game;
+    }
+
     public boolean isPrime() {
         for (Category category : game.categories)
             if (this.equals(category.getPrime()))
@@ -25,5 +30,13 @@ public class Card {
             if (player.allPossessionsEqual(Possession.OWNS, this))
                 return true;
         return false;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

@@ -7,6 +7,19 @@ public class Category {
     private Card[] cards;
     private Card prime;
 
+    public Category(String name, Card... cards) {
+        this.name = name;
+        this.cards = cards;
+    }
+
+    public String[] cardNames() {
+        String[] names = new String[cards.length];
+        for (int i = 0; i < cards.length; i++) {
+            names[i] = cards[i].getName();
+        }
+        return names;
+    }
+
     public String getName() {
         return name;
     }

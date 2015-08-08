@@ -9,6 +9,8 @@ public class Game {
     public final ArrayList<Player> players = new ArrayList<>();
     public final ArrayList<Category> categories = new ArrayList<>();
 
+    private Player playerAtTurn;
+
     public void turn(Player turn, Player[] hadNothing, Player showed, Card... cards) {
         // If some people said they had nothing:
         if (hadNothing != null && hadNothing.length > 0) {
@@ -100,5 +102,23 @@ public class Game {
             if (category.getPrime() == null) return false;
         }
         return true;
+    }
+
+    public void setPlayerAtTurn(Player playerAtTurn) {
+        this.playerAtTurn = playerAtTurn;
+    }
+
+    public Player getPlayerAtTurn() {
+        return playerAtTurn;
+    }
+
+    public Player nextPlayerClockwise(Player reference) {
+        if (reference == null) {
+            return null;
+        } else if (players.indexOf(reference) == players.size() - 1) {
+            return players.get(0);
+        } else {
+            return players.get(players.indexOf(reference) + 1);
+        }
     }
 }
