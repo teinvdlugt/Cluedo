@@ -7,10 +7,10 @@ import android.support.v7.widget.Toolbar;
 
 public class MainActivity extends AppCompatActivity
         implements CardsFragment.OnFragmentInteractionListener,
-        MainFragment.OnFragmentInteractionListener {
+        MainFragment.OnFragmentInteractionListener,
+        ShowFragment.OnFragmentInteractionListener {
 
     public static Game game;
-    private MainFragment mainFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,10 +20,8 @@ public class MainActivity extends AppCompatActivity
 
         initGame();
 
-        mainFragment = new MainFragment();
-
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.fragment_container, mainFragment)
+                .add(R.id.fragment_container, new MainFragment())
                 .commit();
     }
 
@@ -34,13 +32,14 @@ public class MainActivity extends AppCompatActivity
                 new Card("Draco Malfidus", game),
                 new Card("Korzel en Kwast", game),
                 new Card("Lucius Malfidus", game),
-                new Card("Bellatrix van Detta", game),
+                new Card("Peter Pippeling", game),
                 new Card("Dorothea Omber", game),
-                new Card("Peter Pippeling", game));
+                new Card("Bellatrix van Detta", game));
         Category weapons = new Category("Weapons",
+                new Card("Slaapdrank", game),
                 new Card("Viavia", game),
                 new Card("Impedimenta", game),
-                new Card("Slaapdrank", game),
+
                 new Card("Verdwijnkast", game),
                 new Card("Petrificus Totalus", game),
                 new Card("Mandragora", game));
@@ -87,6 +86,20 @@ public class MainActivity extends AppCompatActivity
         chosenCards = cards;
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, new ShowFragment())
+                .commit();
+    }
+
+    public static Player[] hadNothing;
+    public static Player showed;
+
+    @Override
+    public void onCardShowed(Player[] hadNothing, Player showed) {
+        MainActivity.hadNothing = hadNothing;
+        MainActivity.showed = showed;
+        game.turn(hadNothing, showed, chosenCards);
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, new MainFragment())
                 .commit();
     }
 }

@@ -11,7 +11,7 @@ public class Game {
 
     private Player playerAtTurn;
 
-    public void turn(Player turn, Player[] hadNothing, Player showed, Card... cards) {
+    public void turn(Player[] hadNothing, Player showed, Card... cards) {
         // If some people said they had nothing:
         if (hadNothing != null && hadNothing.length > 0) {
             for (Player player : hadNothing) player.setDoesntOwn(cards);
@@ -19,16 +19,16 @@ public class Game {
 
         // If everyone said they had nothing:
         if (showed == null) {
-            if (turn.allPossessionsEqual(Possession.DOESNTOWN, cards)) {
+            if (playerAtTurn.allPossessionsEqual(Possession.DOESNTOWN, cards)) {
                 // Nobody, not even the player at turn himself, has one or more of the cards.
                 // TODO End of the game.
-            } else if (turn.allPossessionsEqual(Possession.OWNS, cards)) {
+            } else if (playerAtTurn.allPossessionsEqual(Possession.OWNS, cards)) {
                 // TODO This player is very silly.
             } else {
                 // The player at turn owns some of the cards. The other cards become prime suspects.
 
                 for (int i = 0; i < cards.length; i++) {
-                    if (turn.allPossessionsEqual(Possession.DOESNTOWN, cards[i])) {
+                    if (playerAtTurn.allPossessionsEqual(Possession.DOESNTOWN, cards[i])) {
                         // This card becomes prime suspect.
                         categories.get(i).setPrime(cards[i]);
                     }
@@ -39,7 +39,7 @@ public class Game {
 
             // If the player who showed something is known to have one of the cards,
             // there is nothing new to deduce.
-            if (turn.anyPossessionEquals(Possession.OWNS, cards)) return;
+            if (playerAtTurn.anyPossessionEquals(Possession.OWNS, cards)) return;
 
             final ArrayList<Card> chance = new ArrayList<>();
             Collections.addAll(chance, cards);
