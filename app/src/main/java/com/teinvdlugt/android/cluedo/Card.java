@@ -1,6 +1,8 @@
 package com.teinvdlugt.android.cluedo;
 
 
+import java.util.ArrayList;
+
 public class Card {
 
     private String name;
@@ -30,6 +32,26 @@ public class Card {
             if (player.allPossessionsEqual(Possession.OWNS, this))
                 return true;
         return false;
+    }
+
+    public Player owner() {
+        for (Player player : game.players)
+            if (player.allPossessionsEqual(Possession.OWNS, this))
+                return player;
+        return null;
+    }
+
+    public Player[] dontOwn() {
+        ArrayList<Player> players = new ArrayList<>();
+        for (Player player : game.players)
+            if (player.allPossessionsEqual(Possession.DOESNTOWN, this))
+                players.add(player);
+
+        Player[] result = new Player[players.size()];
+        for (int i = 0; i < result.length; i++) {
+            result[i] = players.get(i);
+        }
+        return result;
     }
 
     public String getName() {

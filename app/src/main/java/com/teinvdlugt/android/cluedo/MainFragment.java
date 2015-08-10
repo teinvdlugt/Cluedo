@@ -1,6 +1,7 @@
 package com.teinvdlugt.android.cluedo;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -40,7 +41,21 @@ public class MainFragment extends Fragment implements CategoriesRecyclerAdapter.
 
     @Override
     public void onClick(Card card) {
-        
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(card.getName());
+
+        StringBuilder msg = new StringBuilder();
+        if (card.isOwned()) msg.append("Owned by ").append(card.owner().getName());
+        else if (card.isPrime()) msg.append("This card is prime suspect");
+        else {
+            for (Player player : card.dontOwn()) {
+                msg.append(player.getName()).append(" doesn't have it\n");
+            }
+        }
+
+        builder.setMessage(msg);
+        builder.setPositiveButton(android.R.string.ok, null);
+        builder.create().show();
     }
 
     @Override

@@ -42,7 +42,7 @@ public class ShowFragment extends Fragment implements ShowRecyclerAdapter.OnClic
     @Override
     public void onClickYes(Player player) {
         showed = player;
-        // return result to MainActivity
+        returnToActivity();
     }
 
     @Override
@@ -51,7 +51,7 @@ public class ShowFragment extends Fragment implements ShowRecyclerAdapter.OnClic
 
         if (MainActivity.game.nextPlayerClockwise(player).equals(MainActivity.game.getPlayerAtTurn())) {
             showed = null;
-            // return result to MainActivity
+            returnToActivity();
         } else {
             ((ShowRecyclerAdapter) recyclerView.getAdapter()).addPlayerToList(
                     MainActivity.game.nextPlayerClockwise(player));

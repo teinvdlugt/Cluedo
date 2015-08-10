@@ -18,9 +18,9 @@ public class Player {
     public void setDoesntOwn(Card... cards) {
         for (Card card : cards) {
             // Delete the possessions of the card which already exist
-            for (Possession poss : possessions) {
-                if (poss.card.equals(card)) {
-                    possessions.remove(poss);
+            for (int i = 0; i < possessions.size(); i++) {
+                if (possessions.get(i).card.equals(card)) {
+                    possessions.remove(i);
                 }
             }
 

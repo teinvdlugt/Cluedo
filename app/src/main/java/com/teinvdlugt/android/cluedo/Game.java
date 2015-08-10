@@ -66,6 +66,8 @@ public class Game {
         if (checkEndOfGame()) {
             // TODO show happy message
         }
+
+        setPlayerAtTurn(nextPlayerClockwise(getPlayerAtTurn()));
     }
 
     public void checkForPrimes() {
