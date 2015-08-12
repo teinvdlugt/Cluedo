@@ -1,8 +1,11 @@
 package com.teinvdlugt.android.cluedo;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,6 +29,7 @@ public class ShowFragment extends Fragment implements ShowRecyclerAdapter.OnClic
     private RecyclerView recyclerView;
     private ArrayList<Player> hadNothing = new ArrayList<>();
     private Player showed;
+    private Card cardShowed;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -42,7 +46,20 @@ public class ShowFragment extends Fragment implements ShowRecyclerAdapter.OnClic
     @Override
     public void onClickYes(Player player) {
         showed = player;
-        returnToActivity();
+
+        if (MainActivity.game.getPlayerAtTurn().equals(MainActivity.game.getAppUser())) {
+            new AlertDialog.Builder(getActivity())
+                    .setTitle("Which card does " + showed.getName() + " show?")
+                    .setItems(Card.names(MainActivity.chosenCards), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            cardShowed = MainActivity.chosenCards[which];
+                            returnToActivity();
+                        }
+                    }).create().show();
+        } else {
+            returnToActivity();
+        }
     }
 
     @Override
@@ -64,7 +81,7 @@ public class ShowFragment extends Fragment implements ShowRecyclerAdapter.OnClic
             for (int i = 0; i < hadNothing.size(); i++) {
                 hadNothing1[i] = hadNothing.get(i);
             }
-            mListener.onCardShowed(hadNothing1, showed);
+            mListener.onCardShowed(hadNothing1, showed, cardShowed);
         }
     }
 
@@ -90,14 +107,22 @@ public class ShowFragment extends Fragment implements ShowRecyclerAdapter.OnClic
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onCardShowed(Player[] hadNothing, Player showed);
+        /**
+         * Fragment's callback to activity.
+         *
+         * @param hadNothing An array of Players who were asked to show a card but
+         *                   didn't have one of the cards that were suspected by
+         *                   the player at turn. If the first person already showed
+         *                   something, pass null.
+         * @param showed     The player that showed one of his/her cards. If nobody
+         *                   showed anything, pass null.
+         * @param cardShowed The card that was shown by Player showed. This is only
+         *                   known when it's the turn of the {@code game.appUser}. If not,
+         *                   pass null.
+         */
+        void onCardShowed(@Nullable Player[] hadNothing, @Nullable Player showed, @Nullable Card cardShowed);
     }
 }
 

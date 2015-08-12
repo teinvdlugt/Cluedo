@@ -30,8 +30,8 @@ public class CardsFragment extends Fragment {
         View theView = inflater.inflate(R.layout.fragment_cards, container, false);
 
         initViews(theView);
+        setTitleText(theView);
 
-        turnTV.setText("It is " + MainActivity.game.getPlayerAtTurn().getName() + "'s turn");
         for (int i = 0; i < 3; i++) {
             textViews[i].setText(MainActivity.game.categories.get(i).getName());
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
@@ -48,6 +48,16 @@ public class CardsFragment extends Fragment {
         });
 
         return theView;
+    }
+
+    private void setTitleText(View view) {
+        // TODO: 12-8-2015 Extract string resources
+        if (!MainActivity.game.getPlayerAtTurn().equals(MainActivity.game.getAppUser())) {
+            turnTV.setText("It is " + MainActivity.game.getPlayerAtTurn().getName() + "'s turn");
+        } else {
+            turnTV.setText("It\'s your turn!");
+            ((TextView) view.findViewById(R.id.turn_subtitle)).setText("Who do you suspect?");
+        }
     }
 
     private void onClickGo() {

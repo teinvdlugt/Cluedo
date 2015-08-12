@@ -54,6 +54,14 @@ public class Card {
         return result;
     }
 
+    public static String[] names(Card[] cards) {
+        String[] names = new String[cards.length];
+        for (int i = 0; i < names.length; i++)
+            names[i] = cards[i].name;
+
+        return names;
+    }
+
     public String getName() {
         return name;
     }

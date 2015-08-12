@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity
                 new Card("Slaapdrank", game),
                 new Card("Viavia", game),
                 new Card("Impedimenta", game),
-
                 new Card("Verdwijnkast", game),
                 new Card("Petrificus Totalus", game),
                 new Card("Mandragora", game));
@@ -69,6 +68,7 @@ public class MainActivity extends AppCompatActivity
         game.players.add(new Player("Bregt", game));
         game.players.add(new Player("Saar", game));
 
+        game.setAppUser(tein);
         game.setPlayerAtTurn(game.players.get(1)); // Lucel
     }
 
@@ -89,14 +89,9 @@ public class MainActivity extends AppCompatActivity
                 .commit();
     }
 
-    public static Player[] hadNothing;
-    public static Player showed;
-
     @Override
-    public void onCardShowed(Player[] hadNothing, Player showed) {
-        MainActivity.hadNothing = hadNothing;
-        MainActivity.showed = showed;
-        game.turn(hadNothing, showed, chosenCards);
+    public void onCardShowed(Player[] hadNothing, Player showed, Card cardShowed) {
+        game.turn(hadNothing, showed, chosenCards, cardShowed);
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, new MainFragment())

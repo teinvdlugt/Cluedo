@@ -1,6 +1,8 @@
 package com.teinvdlugt.android.cluedo;
 
 
+import android.support.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -10,8 +12,16 @@ public class Game {
     public final ArrayList<Category> categories = new ArrayList<>();
 
     private Player playerAtTurn;
+    private Player appUser;
 
-    public void turn(Player[] hadNothing, Player showed, Card... cards) {
+    /**
+     * @param hadNothing Players that said they didn't have one out of {@code Card[] cards}.
+     * @param showed     The Player that showed a card
+     * @param cards      The cards that were chosen by the player at turn.
+     * @param shown      The card that was showed by player {@code showed}. Pass null if it is not the
+     *                   turn of the appUser (because then it is obviouly unknown which card was shown).
+     */
+    public void turn(@Nullable Player[] hadNothing, @Nullable Player showed, Card[] cards, @Nullable Card shown) {
         // If some people said they had nothing:
         if (hadNothing != null && hadNothing.length > 0) {
             for (Player player : hadNothing) player.setDoesntOwn(cards);
@@ -39,25 +49,29 @@ public class Game {
 
             // If the player who showed something is known to have one of the cards,
             // there is nothing new to deduce.
-            if (playerAtTurn.anyPossessionEquals(Possession.OWNS, cards)) return;
-
-            final ArrayList<Card> chance = new ArrayList<>();
-            Collections.addAll(chance, cards);
-            // Filter out the cards which the player who showed something can't have.
-            for (Card card : cards) {
-                // If the card is prime suspect or if the player is already known to not own the card
-                if (card.isPrime() || showed.allPossessionsEqual(Possession.DOESNTOWN, card))
-                    chance.remove(card);
-                else
-                    // Or if the card is owned by someone else
-                    for (Player player : players)
-                        if (!showed.equals(player) && player.allPossessionsEqual(Possession.OWNS, card))
-                            chance.remove(card);
-            }
-            if (chance.size() == 0) {
-                // TODO show error
+            if (playerAtTurn.anyPossessionEquals(Possession.OWNS, cards)) {
+                // Do nothing
+            } else if (playerAtTurn.equals(appUser)) {
+                showed.setOwns(shown);
             } else {
-                showed.addChance(chance);
+                final ArrayList<Card> chance = new ArrayList<>();
+                Collections.addAll(chance, cards);
+                // Filter out the cards which the player who showed something can't have.
+                for (Card card : cards) {
+                    // If the card is prime suspect or if the player is already known to not own the card
+                    if (card.isPrime() || showed.allPossessionsEqual(Possession.DOESNTOWN, card))
+                        chance.remove(card);
+                    else
+                        // Or if the card is owned by someone else
+                        for (Player player : players)
+                            if (!showed.equals(player) && player.allPossessionsEqual(Possession.OWNS, card))
+                                chance.remove(card);
+                }
+                if (chance.size() == 0) {
+                    // TODO show error
+                } else {
+                    showed.addChance(chance);
+                }
             }
         }
 
@@ -122,5 +136,19 @@ public class Game {
         } else {
             return players.get(players.indexOf(reference) + 1);
         }
+    }
+
+    public Player getAppUser() {
+        return appUser;
+    }
+
+    /**
+     * Please call this method only once, and only while setting
+     * up the game.
+     *
+     * @param appUser The player to assign to {@code appUser}.
+     */
+    public void setAppUser(Player appUser) {
+        this.appUser = appUser;
     }
 }
