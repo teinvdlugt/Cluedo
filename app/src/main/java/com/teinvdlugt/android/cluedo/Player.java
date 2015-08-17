@@ -46,16 +46,16 @@ public class Player {
 
     public void setOwns(Card card) {
         // Delete the possessions of the card which already exist
-        for (Possession poss : possessions) {
-            if (poss.card.equals(card)) {
-                possessions.remove(poss);
+        for (int i = 0; i < possessions.size(); i++) {
+            if (possessions.get(i).card.equals(card)) {
+                possessions.remove(i);
             }
         }
 
         // Also delete chances involving this card.
-        for (ArrayList<Card> chance : chances) {
-            if (chance.contains(card)) {
-                chances.remove(chance);
+        for (int i = 0; i < chances.size(); i++) {
+            if (chances.get(i).contains(card)) {
+                chances.remove(i);
             }
         }
 
