@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -157,25 +158,22 @@ class ShowRecyclerAdapter extends RecyclerView.Adapter<ShowRecyclerAdapter.ShowV
 
     @Override
     public void onBindViewHolder(ShowViewHolder holder, final int i) {
-        holder.title.setText("Did " + data.get(i).getName() + " show something?");
-
-        if (i == data.size() - 1) {
-            holder.noButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (mListener != null) mListener.onClickNo(data.get(i));
-                }
-            });
-            holder.yesButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (mListener != null) mListener.onClickYes(data.get(i));
-                }
-            });
+        boolean disableButtons = i != data.size() - 1;
+        if (!data.get(i).equals(MainActivity.game.getAppUser())) {
+            holder.setUpNormalCard(data.get(i), disableButtons);
         } else {
-            // Disable buttons
-            holder.noButton.setEnabled(false);
-            holder.yesButton.setEnabled(false);
+            ArrayList<Card> appUserHas = new ArrayList<>();
+            for (Card card : MainActivity.chosenCards)
+                if (MainActivity.game.getAppUser().allPossessionsEqual(Possession.OWNS, card))
+                    appUserHas.add(card);
+
+            if (appUserHas.size() == 0) {
+                // App user doesn't have any of the cards
+                holder.setUpAppUserDoesNotHave(disableButtons);
+            } else {
+                // App user has got one or more of the cards
+                holder.setUpAppUserShows(appUserHas, disableButtons);
+            }
         }
     }
 
@@ -185,14 +183,92 @@ class ShowRecyclerAdapter extends RecyclerView.Adapter<ShowRecyclerAdapter.ShowV
     }
 
     class ShowViewHolder extends RecyclerView.ViewHolder {
-        TextView title;
-        Button noButton, yesButton;
+        LinearLayout normal, appUserShows, appUserDoesNotHave;
 
         public ShowViewHolder(View itemView) {
             super(itemView);
-            title = (TextView) itemView.findViewById(R.id.title);
-            noButton = (Button) itemView.findViewById(R.id.noButton);
-            yesButton = (Button) itemView.findViewById(R.id.yesButton);
+
+            normal = (LinearLayout) itemView.findViewById(R.id.normal_show_card);
+            appUserShows = (LinearLayout) itemView.findViewById(R.id.appUser_shows);
+            appUserDoesNotHave = (LinearLayout) itemView.findViewById(R.id.appUserDoesNotHave);
+        }
+
+        public void setUpNormalCard(final Player player, boolean disableButtons) {
+            appUserDoesNotHave.setVisibility(View.GONE);
+            appUserShows.setVisibility(View.GONE);
+            normal.setVisibility(View.VISIBLE);
+
+            Button yesButton = (Button) normal.findViewById(R.id.yesButton);
+            Button noButton = (Button) normal.findViewById(R.id.noButton);
+
+            ((TextView) normal.findViewById(R.id.title)).setText("Did " + player.getName() + " show something?");
+            if (disableButtons) {
+                yesButton.setEnabled(false);
+                noButton.setEnabled(false);
+            } else {
+                yesButton.setEnabled(true);
+                noButton.setEnabled(true);
+                noButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (mListener != null) mListener.onClickNo(player);
+                    }
+                });
+                yesButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (mListener != null) mListener.onClickYes(player);
+                    }
+                });
+            }
+        }
+
+        public void setUpAppUserDoesNotHave(boolean disableButton) {
+            appUserDoesNotHave.setVisibility(View.VISIBLE);
+            appUserShows.setVisibility(View.GONE);
+            normal.setVisibility(View.GONE);
+
+            ((TextView) appUserDoesNotHave.findViewById(R.id.textView)).setText("You don't have a card to show.");
+            Button button = (Button) appUserDoesNotHave.findViewById(R.id.okButton);
+            if (disableButton) {
+                button.setEnabled(false);
+            } else {
+                button.setEnabled(true);
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (mListener != null) mListener.onClickNo(MainActivity.game.getAppUser());
+                    }
+                });
+            }
+        }
+
+        public void setUpAppUserShows(ArrayList<Card> cardsToDisplay, boolean disableButton) {
+            appUserDoesNotHave.setVisibility(View.GONE);
+            appUserShows.setVisibility(View.VISIBLE);
+            normal.setVisibility(View.GONE);
+
+            ((TextView) appUserShows.findViewById(R.id.title2)).setText(
+                    "Show " + MainActivity.game.getPlayerAtTurn().getName() + " one of these cards:");
+            TextView cardsTV = (TextView) appUserShows.findViewById(R.id.cardsToShow);
+            cardsTV.setText(cardsToDisplay.get(0).getName());
+            for (int i = 1; i < cardsToDisplay.size(); i++) {
+                cardsTV.append(", " + cardsToDisplay.get(i).getName());
+            }
+
+            Button button = (Button) appUserShows.findViewById(R.id.doneButton);
+            if (disableButton) {
+                button.setEnabled(false);
+            } else {
+                button.setEnabled(true);
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (mListener != null) mListener.onClickYes(MainActivity.game.getAppUser());
+                    }
+                });
+            }
+
         }
     }
 }
