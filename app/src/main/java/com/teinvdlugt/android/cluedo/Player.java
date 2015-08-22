@@ -7,12 +7,14 @@ public class Player {
 
     private String name;
     private Game game;
+    private int numOfCards;
     private ArrayList<Possession> possessions = new ArrayList<>();
     private ArrayList<ArrayList<Card>> chances = new ArrayList<>();
 
-    public Player(String name, Game game) {
+    public Player(String name, Game game, int numOfCards) {
         this.name = name;
         this.game = game;
+        this.numOfCards = numOfCards;
     }
 
     public void setDoesntOwn(Card... cards) {
@@ -67,6 +69,32 @@ public class Player {
         for (Player player : game.players) {
             if (!player.equals(this)) {
                 player.setDoesntOwn(card);
+            }
+        }
+
+        checkAllCardsKnown();
+    }
+
+    public void checkAllCardsKnown() {
+        if (possessions.size() >= numOfCards) {
+            // Count how many cards of this player are already known
+            ArrayList<Card> ownedCards = new ArrayList<>();
+            for (Possession poss : possessions) {
+                if (poss.status == Possession.OWNS && !ownedCards.contains(poss.card)) {
+                    ownedCards.add(poss.card);
+                }
+            }
+
+            // If all cards are known, indicate for all other cards that
+            // this player doesn't own it
+            if (ownedCards.size() == numOfCards) {
+                for (Category cat : game.categories) {
+                    for (Card card : cat.getCards()) {
+                        if (!ownedCards.contains(card)) {
+                            setDoesntOwn(card);
+                        }
+                    }
+                }
             }
         }
     }
@@ -132,5 +160,13 @@ public class Player {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getNumOfCards() {
+        return numOfCards;
+    }
+
+    public void setNumOfCards(int numOfCards) {
+        this.numOfCards = numOfCards;
     }
 }

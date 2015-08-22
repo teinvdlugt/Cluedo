@@ -57,19 +57,19 @@ public class MainActivity extends AppCompatActivity
         game.categories.add(weapons);
         game.categories.add(places);
 
-        Player tein = new Player("Tein", game);
+        Player tein = new Player("Tein", game, 4);
         tein.setOwns(game.categories.get(0).getCards()[0]);
         tein.setOwns(game.categories.get(0).getCards()[1]);
         tein.setOwns(game.categories.get(1).getCards()[0]);
         tein.setOwns(game.categories.get(2).getCards()[0]);
         game.players.add(tein);
-        game.players.add(new Player("Lucel", game));
-        game.players.add(new Player("Kees", game));
-        game.players.add(new Player("Bregt", game));
-        game.players.add(new Player("Saar", game));
+        game.players.add(new Player("Lucel", game, 4));
+        game.players.add(new Player("Kees", game, 4));
+        game.players.add(new Player("Bregt", game, 5));
+        game.players.add(new Player("Saar", game, 4));
 
         game.setAppUser(tein);
-        game.setPlayerAtTurn(game.players.get(1)); // Lucel
+        game.setPlayerAtTurn(game.players.get(3)); // Lucel
     }
 
     @Override
