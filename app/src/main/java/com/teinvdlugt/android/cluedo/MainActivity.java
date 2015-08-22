@@ -2,6 +2,7 @@ package com.teinvdlugt.android.cluedo;
 
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -74,9 +75,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onClickNextTurn() {
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, new CardsFragment())
-                .commit();
+        slideFragment(new CardsFragment());
     }
 
     public static Card[] chosenCards;
@@ -84,17 +83,19 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onCardsChosen(Card... cards) {
         chosenCards = cards;
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, new ShowFragment())
-                .commit();
+        slideFragment(new ShowFragment());
     }
 
     @Override
     public void onCardShowed(Player[] hadNothing, Player showed, Card cardShowed) {
         game.turn(hadNothing, showed, chosenCards, cardShowed);
+        slideFragment(new MainFragment());
+    }
 
+    private void slideFragment(Fragment fragment) {
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, new MainFragment())
+                .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                .replace(R.id.fragment_container, fragment)
                 .commit();
     }
 }
