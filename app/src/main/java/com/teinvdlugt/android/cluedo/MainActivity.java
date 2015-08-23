@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 
 public class MainActivity extends AppCompatActivity
         implements CardsFragment.OnFragmentInteractionListener,
@@ -24,6 +27,14 @@ public class MainActivity extends AppCompatActivity
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragment_container, new MainFragment())
                 .commit();
+    }
+
+    private void enterImmersiveMode() {
+        // TODO: 23-8-2015 Needs to be tested on older APIs
+        findViewById(R.id.fragment_container).setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE);
     }
 
     @SuppressWarnings("SpellCheckingInspection")
@@ -97,5 +108,20 @@ public class MainActivity extends AppCompatActivity
                 .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
                 .replace(R.id.fragment_container, fragment)
                 .commit();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_immersive) {
+            enterImmersiveMode();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
