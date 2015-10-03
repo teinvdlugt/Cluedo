@@ -1,10 +1,13 @@
 <resources>
     <string name="app_name">Cluedo</string>
-
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
-
-<!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="toggle_immersive_mode">Toggle immersive mode</string>
+    <string name="name_of_card">Name of card</string>
+    <string name="add_category">Add category</string>
+    <string name="add_card">Add card</string>
+    <string name="name_of_category">Name of category</string>
+    <string name="next">Next</string>
+    <string name="remove">Remove</string>
+    <string name="name_of_player">Name of player</string>
+    <string name="you">You</string>
+    <string name="add_player">Add player</string>
 </resources>

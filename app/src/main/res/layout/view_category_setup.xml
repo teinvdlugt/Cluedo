@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/category_editText"
+        layout="@layout/view_card_setup_edit_text" />
+
+    <LinearLayout
+        android:id="@+id/indentedLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="25dp"
+        android:paddingStart="25dp"
+        tools:ignore="RtlSymmetry">
+
+        <LinearLayout
+            android:id="@+id/cards_linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+        <TextView
+            android:id="@+id/addCard_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackground"
+            android:drawableLeft="@mipmap/ic_add_black_24dp"
+            android:drawableStart="@mipmap/ic_add_black_24dp"
+            android:gravity="center_vertical"
+            android:padding="4dp"
+            android:text="@string/add_card"
+            android:textSize="18sp" />
+    </LinearLayout>
+</LinearLayout>

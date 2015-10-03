@@ -9,10 +9,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.teinvdlugt.android.cluedo.setup.CardSetupFragment;
+import com.teinvdlugt.android.cluedo.setup.PlayerSetupFragment;
+
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity
-        implements CardsFragment.OnFragmentInteractionListener,
+        implements CardSetupFragment.OnCardsChosenListener,
+        CardsFragment.OnFragmentInteractionListener,
         MainFragment.OnFragmentInteractionListener,
-        ShowFragment.OnFragmentInteractionListener {
+        ShowFragment.OnFragmentInteractionListener,
+        PlayerSetupFragment.OnPlayersChosenListener {
 
     public static Game game;
 
@@ -22,10 +29,11 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
-        initGame();
+        //initGame();
 
+        game = new Game();
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.fragment_container, new MainFragment())
+                .add(R.id.fragment_container, new /*MainFragment()*/ CardSetupFragment())
                 .commit();
     }
 
@@ -37,51 +45,73 @@ public class MainActivity extends AppCompatActivity
                         | View.SYSTEM_UI_FLAG_IMMERSIVE);
     }
 
+    @Override
+    public void onCardsChosen(ArrayList<Category> categories) {
+        // For debugging:
+        if (categories.get(0).getName().isEmpty()) {
+            Category suspects = new Category("Suspects",
+                    new Card("Draco Malfidus", game),
+                    new Card("Korzel en Kwast", game),
+                    new Card("Lucius Malfidus", game),
+                    new Card("Peter Pippeling", game),
+                    new Card("Dorothea Omber", game),
+                    new Card("Bellatrix van Detta", game));
+            Category weapons = new Category("Weapons",
+                    new Card("Slaapdrank", game),
+                    new Card("Viavia", game),
+                    new Card("Impedimenta", game),
+                    new Card("Verdwijnkast", game),
+                    new Card("Petrificus Totalus", game),
+                    new Card("Mandragora", game));
+            Category places = new Category("Places",
+                    new Card("Grote zaal", game),
+                    new Card("Ziekenzaal", game),
+                    new Card("Kamer van Hoge Nood", game),
+                    new Card("Toverdranklokaal", game),
+                    new Card("Prijzenkamer", game),
+                    new Card("Waarzeggerijlokaal", game),
+                    new Card("Uilenvleugel", game),
+                    new Card("Bibliotheek", game),
+                    new Card("Verweer tegen de zwarte kunsten", game));
+            game.categories.add(suspects);
+            game.categories.add(weapons);
+            game.categories.add(places);
+        } else {
+            game.categories.addAll(categories);
+        }
+
+        slideFragment(new PlayerSetupFragment());
+    }
+
+    @Override
+    public void onPlayersChosen(Player appUser, ArrayList<Player> otherPlayers) {
+        // For debugging:
+        if (otherPlayers.get(0).getName().isEmpty()) {
+            Player you = new Player("You", game, 4);
+            you.setOwns(game.categories.get(0).getCards()[0]);
+            you.setOwns(game.categories.get(0).getCards()[1]);
+            you.setOwns(game.categories.get(1).getCards()[0]);
+            you.setOwns(game.categories.get(2).getCards()[0]);
+            game.players.add(you);
+            game.players.add(new Player("Lucel", game, 4));
+            game.players.add(new Player("Kees", game, 4));
+            game.players.add(new Player("Bregt", game, 5));
+            game.players.add(new Player("Saar", game, 4));
+
+            game.setAppUser(you);
+        } else {
+            game.players.add(appUser);
+            game.players.addAll(otherPlayers);
+            game.setAppUser(appUser);
+        }
+
+        initGame();
+        slideFragment(new MainFragment());
+    }
+
     @SuppressWarnings("SpellCheckingInspection")
     private void initGame() {
-        game = new Game();
-        Category suspects = new Category("Suspects",
-                new Card("Draco Malfidus", game),
-                new Card("Korzel en Kwast", game),
-                new Card("Lucius Malfidus", game),
-                new Card("Peter Pippeling", game),
-                new Card("Dorothea Omber", game),
-                new Card("Bellatrix van Detta", game));
-        Category weapons = new Category("Weapons",
-                new Card("Slaapdrank", game),
-                new Card("Viavia", game),
-                new Card("Impedimenta", game),
-                new Card("Verdwijnkast", game),
-                new Card("Petrificus Totalus", game),
-                new Card("Mandragora", game));
-        Category places = new Category("Places",
-                new Card("Grote zaal", game),
-                new Card("Ziekenzaal", game),
-                new Card("Kamer van Hoge Nood", game),
-                new Card("Toverdranklokaal", game),
-                new Card("Prijzenkamer", game),
-                new Card("Waarzeggerijlokaal", game),
-                new Card("Uilenvleugel", game),
-                new Card("Bibliotheek", game),
-                new Card("Verweer tegen de zwarte kunsten", game));
-
-        game.categories.add(suspects);
-        game.categories.add(weapons);
-        game.categories.add(places);
-
-        Player tein = new Player("Tein", game, 4);
-        tein.setOwns(game.categories.get(0).getCards()[0]);
-        tein.setOwns(game.categories.get(0).getCards()[1]);
-        tein.setOwns(game.categories.get(1).getCards()[0]);
-        tein.setOwns(game.categories.get(2).getCards()[0]);
-        game.players.add(tein);
-        game.players.add(new Player("Lucel", game, 4));
-        game.players.add(new Player("Kees", game, 4));
-        game.players.add(new Player("Bregt", game, 5));
-        game.players.add(new Player("Saar", game, 4));
-
-        game.setAppUser(tein);
-        game.setPlayerAtTurn(game.players.get(3)); // Lucel
+        game.setPlayerAtTurn(game.players.get(2));
     }
 
     @Override
@@ -114,13 +144,16 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
-
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_immersive) {
             enterImmersiveMode();
+        } else if (item.getItemId() == R.id.new_game) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, new CardSetupFragment())
+                    .commit();
         }
         return super.onOptionsItemSelected(item);
     }

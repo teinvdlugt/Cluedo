@@ -8,4 +8,9 @@
         android:orderInCategory="100"
         android:title="@string/toggle_immersive_mode"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/new_game"
+        android:orderInCategory="101"
+        android:title="New game"
+        app:showAsAction="never" />
 </menu>
