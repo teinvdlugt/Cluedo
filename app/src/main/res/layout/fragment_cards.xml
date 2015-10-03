@@ -11,10 +11,9 @@
 
     <TextView
         android:id="@+id/turn_tv"
+        style="@style/FragmentTitleStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="32sp"
         tools:text="It is Lucel's turn" />
 
     <TextView

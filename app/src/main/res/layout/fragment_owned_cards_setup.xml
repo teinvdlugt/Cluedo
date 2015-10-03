@@ -7,9 +7,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingRight="@dimen/activity_margin"
         android:paddingLeft="@dimen/activity_margin"
+        android:paddingRight="@dimen/activity_margin"
         android:paddingTop="@dimen/activity_margin">
+
+        <TextView
+            style="@style/FragmentTitleStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ownedCardsFragmentTitle" />
 
         <com.teinvdlugt.android.cluedo.setup.CategoryTreeView
             android:id="@+id/treeView"

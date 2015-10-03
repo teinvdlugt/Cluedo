@@ -11,4 +11,6 @@
     <string name="you">You</string>
     <string name="add_player">Add player</string>
     <string name="expand_or_collapse_xs">Expand or collapse</string>
+    <string name="playerSetupFragmentTitle">Set up the players</string>
+    <string name="ownedCardsFragmentTitle">Which cards do you have?</string>
 </resources>
