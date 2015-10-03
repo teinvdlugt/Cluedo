@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.teinvdlugt.android.cluedo.setup.CardSetupFragment;
+import com.teinvdlugt.android.cluedo.setup.OwnedCardsSetupFragment;
 import com.teinvdlugt.android.cluedo.setup.PlayerSetupFragment;
 
 import java.util.ArrayList;
@@ -19,7 +20,8 @@ public class MainActivity extends AppCompatActivity
         CardsFragment.OnFragmentInteractionListener,
         MainFragment.OnFragmentInteractionListener,
         ShowFragment.OnFragmentInteractionListener,
-        PlayerSetupFragment.OnPlayersChosenListener {
+        PlayerSetupFragment.OnPlayersChosenListener,
+        OwnedCardsSetupFragment.OnOwnedCardsChosenListener {
 
     public static Game game;
 
@@ -88,10 +90,6 @@ public class MainActivity extends AppCompatActivity
         // For debugging:
         if (otherPlayers.get(0).getName().isEmpty()) {
             Player you = new Player("You", game, 4);
-            you.setOwns(game.categories.get(0).getCards()[0]);
-            you.setOwns(game.categories.get(0).getCards()[1]);
-            you.setOwns(game.categories.get(1).getCards()[0]);
-            you.setOwns(game.categories.get(2).getCards()[0]);
             game.players.add(you);
             game.players.add(new Player("Lucel", game, 4));
             game.players.add(new Player("Kees", game, 4));
@@ -103,6 +101,23 @@ public class MainActivity extends AppCompatActivity
             game.players.add(appUser);
             game.players.addAll(otherPlayers);
             game.setAppUser(appUser);
+        }
+
+        slideFragment(new OwnedCardsSetupFragment());
+    }
+
+    @Override
+    public void onOwnedCardsChosen(ArrayList<Card> ownedCards) {
+        // For debugging:
+        if (ownedCards.size() == 0) {
+            Player appUser = game.getAppUser();
+            appUser.setOwns(game.categories.get(0).getCards()[0]);
+            appUser.setOwns(game.categories.get(0).getCards()[1]);
+            appUser.setOwns(game.categories.get(1).getCards()[0]);
+            appUser.setOwns(game.categories.get(2).getCards()[0]);
+        } else {
+            for (Card card : ownedCards)
+                game.getAppUser().setOwns(card);
         }
 
         initGame();
