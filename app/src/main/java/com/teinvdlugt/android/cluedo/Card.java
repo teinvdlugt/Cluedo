@@ -13,6 +13,10 @@ public class Card {
         this.game = game;
     }
 
+    public Card(String name) {
+        this.name = name;
+    }
+
     public boolean isPrime() {
         for (Category category : game.categories)
             if (this.equals(category.getPrime()))

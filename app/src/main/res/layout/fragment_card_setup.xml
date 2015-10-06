@@ -13,7 +13,13 @@
             style="@style/FragmentTitleStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Set up the cards of the game you use" />
+            android:text="@string/card_setup_fragment_title" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/or_choose_existing"
+            android:textAppearance="?android:textAppearanceMedium" />
 
         <LinearLayout
             android:id="@+id/categories_linearLayout"
@@ -33,11 +39,50 @@
             android:text="@string/add_category"
             android:textSize="18sp" />
 
-        <Button
-            android:id="@+id/nextButton"
-            style="?buttonBarButtonStyle"
+        <TextView
+            android:id="@+id/clearAll_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackground"
+            android:drawableLeft="@mipmap/ic_clear_black_24dp"
+            android:drawableStart="@mipmap/ic_clear_black_24dp"
+            android:gravity="center_vertical"
+            android:padding="8dp"
+            android:text="@string/clear_all"
+            android:textSize="18sp" />
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/card_setup_name_editText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/name_for_card_setup_hint" />
+        </android.support.design.widget.TextInputLayout>
+
+        <LinearLayout
+            style="?buttonBarStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/next" />
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/loadExisting_button"
+                style="?buttonBarButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/load_existing" />
+
+            <Button
+                android:id="@+id/nextButton"
+                style="?buttonBarButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/next" />
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>

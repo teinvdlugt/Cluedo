@@ -13,4 +13,15 @@
     <string name="expand_or_collapse_xs">Expand or collapse</string>
     <string name="playerSetupFragmentTitle">Set up the players</string>
     <string name="ownedCardsFragmentTitle">Which cards do you have?</string>
+    <string name="dialog_save_setup_message">How do you want to call this game setup?</string>
+    <string name="card_setup_save_name_error">That name already exists. Existing game setup will be overriden.</string>
+    <string name="load_existing">Load existing</string>
+    <string name="clear">Clear</string>
+    <string name="clear_all">Clear all</string>
+    <string name="default_setup">Default</string>
+    <string name="name_for_card_setup_hint">Enter a name to save this setup</string>
+    <string name="or_choose_existing">Or choose a saved card setup</string>
+    <string name="card_setup_fragment_title">Set up the cards of the game you use</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>

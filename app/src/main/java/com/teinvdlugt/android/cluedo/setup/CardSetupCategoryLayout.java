@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.teinvdlugt.android.cluedo.Card;
@@ -46,7 +45,7 @@ public class CardSetupCategoryLayout extends LinearLayout {
         addCardET();
     }
 
-    private void addCardET() {
+    private EditText addCardET() {
         final ViewGroup editTextLayout = (ViewGroup) LayoutInflater.from(getContext())
                 .inflate(R.layout.view_card_setup_edit_text, cardETContainer, false);
         final EditText et = (EditText) editTextLayout.findViewById(R.id.editText);
@@ -62,6 +61,26 @@ public class CardSetupCategoryLayout extends LinearLayout {
                 cardETContainer.removeView(editTextLayout);
             }
         });
+        return et;
+    }
+
+    public void loadCategory(Category category) {
+        cardETs.clear();
+        cardETContainer.removeAllViews();
+
+        categoryET.setText(category.getName());
+        for (Card card : category.getCards()) {
+            EditText et = addCardET();
+            et.setText(card.getName());
+        }
+    }
+
+    public boolean validInput() {
+        if (cardETs.size() == 0) return false;
+        if (categoryET.length() == 0) return false;
+        for (EditText et : cardETs)
+            if (et.length() == 0) return false;
+        return true;
     }
 
     public Category getCategory(Game game) {
