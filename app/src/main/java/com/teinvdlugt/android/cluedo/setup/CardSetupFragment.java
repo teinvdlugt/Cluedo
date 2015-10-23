@@ -17,7 +17,7 @@ import com.teinvdlugt.android.cluedo.Game;
 import com.teinvdlugt.android.cluedo.MainActivity;
 import com.teinvdlugt.android.cluedo.R;
 import com.teinvdlugt.android.cluedo.io.CardSetup;
-import com.teinvdlugt.android.cluedo.io.SetupJSONHandler;
+import com.teinvdlugt.android.cluedo.io.CardSetupJSONUtils;
 
 import java.util.ArrayList;
 
@@ -79,7 +79,7 @@ public class CardSetupFragment extends Fragment {
     }
 
     private void onClickLoadFromExisting() {
-        final ArrayList<CardSetup> cardSetups = SetupJSONHandler.getSavedCardSetups(getContext());
+        final ArrayList<CardSetup> cardSetups = CardSetupJSONUtils.getSavedCardSetups(getContext());
         if (cardSetups.size() == 0) cardSetups.add(CardSetup.defaultSetup(getContext()));
 
         // No saved card setups:
@@ -137,7 +137,7 @@ public class CardSetupFragment extends Fragment {
             result.add(categoryLayout.getCategory(MainActivity.game));
 
         // Save this setup
-        SetupJSONHandler.saveCardSetup(getContext(), cardSetupName, result);
+        CardSetupJSONUtils.saveCardSetup(getContext(), cardSetupName, result);
 
         // Notify MainActivity
         listener.onCardsChosen(result);

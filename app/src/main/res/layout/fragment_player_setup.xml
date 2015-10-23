@@ -38,6 +38,11 @@
             android:text="@string/add_player"
             android:textSize="18sp" />
 
+        <com.teinvdlugt.android.cluedo.setup.PlayerSetupPlayersView
+            android:id="@+id/players_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
         <Button
             android:id="@+id/doneButton"
             style="?buttonBarButtonStyle"

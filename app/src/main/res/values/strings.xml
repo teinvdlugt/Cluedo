@@ -24,4 +24,7 @@
     <string name="card_setup_fragment_title">Set up the cards of the game you use</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="player_setup_error_message">Please fill all fields.</string>
+    <string name="delete_saved_player_confirmation_message">Do you want to delete the player \"%s\"?</string>
+    <string name="delete">Delete</string>
 </resources>

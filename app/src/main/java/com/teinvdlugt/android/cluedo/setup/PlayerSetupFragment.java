@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,10 +14,11 @@ import android.widget.LinearLayout;
 import com.teinvdlugt.android.cluedo.MainActivity;
 import com.teinvdlugt.android.cluedo.Player;
 import com.teinvdlugt.android.cluedo.R;
+import com.teinvdlugt.android.cluedo.io.PlayerSetupJSONUtils;
 
 import java.util.ArrayList;
 
-public class PlayerSetupFragment extends Fragment {
+public class PlayerSetupFragment extends Fragment implements PlayerSetupPlayersView.OnPlayerNameClickListener {
 
     private LinearLayout playerETContainer;
     private ArrayList<EditText> playerETs = new ArrayList<>();
@@ -40,6 +42,7 @@ public class PlayerSetupFragment extends Fragment {
                 addPlayerET();
             }
         });
+        ((PlayerSetupPlayersView) view.findViewById(R.id.players_list)).setOnPlayerNameClickListener(this);
 
         addPlayerET();
         return view;
@@ -64,12 +67,47 @@ public class PlayerSetupFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onPlayerNameClick(String name) {
+        for (EditText et : playerETs) {
+            if (et.length() == 0) {
+                playerETs.get(playerETs.size() - 1).setText(name);
+                return;
+            }
+        }
+
+        addPlayerET();
+        playerETs.get(playerETs.size() - 1).setText(name);
+    }
+
     private void done() {
+        // Check if input is valid
+        for (EditText playerET : playerETs) {
+            if (playerET.length() == 0) {
+                new AlertDialog.Builder(getContext())
+                        .setMessage(getContext().getString(R.string.player_setup_error_message))
+                        .setPositiveButton(android.R.string.ok, null)
+                        .create().show();
+                return;
+            }
+        }
+
+        // Create Player objects
         ArrayList<Player> players = new ArrayList<>();
         for (EditText playerET : playerETs) {
             players.add(new Player(playerET.getText().toString(), MainActivity.game, 4));
         }
-        if (listener != null) listener.onPlayersChosen(new Player("You", MainActivity.game, 4), players);
+
+        // Save names of players
+        String[] names = new String[players.size()];
+        for (int i = 0; i < players.size(); i++) {
+            names[i] = players.get(i).getName();
+        }
+        PlayerSetupJSONUtils.addPlayers(getContext(), names);
+
+        // Notify listener
+        if (listener != null)
+            listener.onPlayersChosen(new Player("You", MainActivity.game, 4), players);
     }
 
 

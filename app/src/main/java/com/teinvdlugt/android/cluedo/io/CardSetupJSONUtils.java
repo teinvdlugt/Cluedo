@@ -11,19 +11,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class SetupJSONHandler {
-    private SetupJSONHandler() {
-    }
-
-
+public abstract class CardSetupJSONUtils {
     private static final String CARD_SETUPS_FILE = "game_setups";
     private static final String CARD_SETUP_NAME = "\"name\"";
     private static final String CARD_SETUP_CATEGORIES = "\"categories\"";
@@ -43,7 +34,7 @@ public class SetupJSONHandler {
         saved.add(new CardSetup(name, categories));
 
         String json = cardSetupArrayToJSON(saved);
-        saveFile(context, CARD_SETUPS_FILE, json);
+        FileUtils.saveFile(context, CARD_SETUPS_FILE, json);
     }
 
     private static String cardSetupArrayToJSON(ArrayList<CardSetup> array) {
@@ -77,7 +68,7 @@ public class SetupJSONHandler {
     }
 
     public static ArrayList<String> getSavedCardSetupNames(Context context) {
-        String file = loadFile(context, CARD_SETUPS_FILE);
+        String file = FileUtils.loadFile(context, CARD_SETUPS_FILE);
         try {
             JSONArray jsonArray = new JSONArray(file);
             ArrayList<String> result = new ArrayList<>();
@@ -93,7 +84,7 @@ public class SetupJSONHandler {
 
     public static ArrayList<CardSetup> getSavedCardSetups(Context context) {
         ArrayList<CardSetup> result = new ArrayList<>();
-        String file = loadFile(context, CARD_SETUPS_FILE);
+        String file = FileUtils.loadFile(context, CARD_SETUPS_FILE);
         try {
             JSONArray jArray = new JSONArray(file);
 
@@ -128,29 +119,4 @@ public class SetupJSONHandler {
         return result;
     }
 
-    public static void saveFile(Context context, String fileName, String file) {
-        try {
-            FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_PRIVATE);
-            fos.write(file.getBytes());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static String loadFile(Context context, String fileName) {
-        try {
-            FileInputStream fis = context.openFileInput(fileName);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
-
-            StringBuilder file = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                file.append(line).append("\n");
-            }
-            return file.toString();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 }
