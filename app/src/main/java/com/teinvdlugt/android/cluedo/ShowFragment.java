@@ -1,6 +1,5 @@
 package com.teinvdlugt.android.cluedo;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -140,8 +139,8 @@ class ShowRecyclerAdapter extends RecyclerView.Adapter<ShowRecyclerAdapter.ShowV
 
     public void addPlayerToList(Player player) {
         data.add(player);
-        //notifyItemInserted(data.size()); // TODO: 9-8-2015 For animations, but buttons don't get disabled
-        notifyDataSetChanged();
+        notifyItemInserted(data.size());
+        notifyItemChanged(data.size() - 2);
     }
 
     interface OnClickListener {
