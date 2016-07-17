@@ -28,4 +28,7 @@
     <string name="delete_saved_player_confirmation_message">Do you want to delete the player \"%s\"?</string>
     <string name="delete">Delete</string>
     <string name="first_turn_setup_fragment_title">Which player begins?</string>
+    <string name="launch_activity_title">Welcome to Cluedo Assist</string>
+    <string name="launch_activity_description">Always win Cluedo games while using this app</string>
+    <string name="start">Start</string>
 </resources>

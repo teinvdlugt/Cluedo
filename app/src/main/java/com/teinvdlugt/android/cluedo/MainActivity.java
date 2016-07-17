@@ -31,8 +31,6 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
-        //initGame();
-
         game = new Game();
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragment_container, new /*MainFragment()*/ CardSetupFragment())
