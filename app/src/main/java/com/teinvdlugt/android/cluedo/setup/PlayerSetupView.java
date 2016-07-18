@@ -20,7 +20,7 @@ import com.teinvdlugt.android.cluedo.io.PlayerSetupJSONUtils;
 import java.util.List;
 
 
-public class PlayerSetupPlayersView extends LinearLayout {
+public class PlayerSetupView extends LinearLayout {
     public interface OnPlayerNameClickListener {
         void onPlayerNameClick(String name);
     }
@@ -89,12 +89,12 @@ public class PlayerSetupPlayersView extends LinearLayout {
         mListener = listener;
     }
 
-    public PlayerSetupPlayersView(Context context) {
+    public PlayerSetupView(Context context) {
         super(context);
         init();
     }
 
-    public PlayerSetupPlayersView(Context context, AttributeSet attrs) {
+    public PlayerSetupView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }

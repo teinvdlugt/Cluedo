@@ -3,6 +3,7 @@
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:id="@+id/root"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -12,6 +13,7 @@
             style="@style/FragmentTitleStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
             android:text="@string/playerSetupFragmentTitle" />
 
         <EditText
@@ -30,6 +32,7 @@
             android:id="@+id/addPlayer_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
             android:background="?selectableItemBackground"
             android:drawableLeft="@mipmap/ic_add_black_24dp"
             android:drawableStart="@mipmap/ic_add_black_24dp"
@@ -38,15 +41,15 @@
             android:text="@string/add_player"
             android:textSize="18sp" />
 
-        <com.teinvdlugt.android.cluedo.setup.PlayerSetupPlayersView
+        <com.teinvdlugt.android.cluedo.setup.PlayerSetupView
             android:id="@+id/players_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <Button
+            android:layout_gravity="end"
             android:id="@+id/doneButton"
-            style="?buttonBarButtonStyle"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/next" />
     </LinearLayout>

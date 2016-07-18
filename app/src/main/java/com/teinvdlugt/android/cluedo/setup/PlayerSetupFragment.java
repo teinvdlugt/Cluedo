@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import com.teinvdlugt.android.cluedo.LaunchActivity;
 import com.teinvdlugt.android.cluedo.MainActivity;
 import com.teinvdlugt.android.cluedo.Player;
 import com.teinvdlugt.android.cluedo.R;
@@ -18,7 +19,7 @@ import com.teinvdlugt.android.cluedo.io.PlayerSetupJSONUtils;
 
 import java.util.ArrayList;
 
-public class PlayerSetupFragment extends Fragment implements PlayerSetupPlayersView.OnPlayerNameClickListener {
+public class PlayerSetupFragment extends Fragment implements PlayerSetupView.OnPlayerNameClickListener {
 
     private LinearLayout playerETContainer;
     private ArrayList<EditText> playerETs = new ArrayList<>();
@@ -42,9 +43,10 @@ public class PlayerSetupFragment extends Fragment implements PlayerSetupPlayersV
                 addPlayerET();
             }
         });
-        ((PlayerSetupPlayersView) view.findViewById(R.id.players_list)).setOnPlayerNameClickListener(this);
+        ((PlayerSetupView) view.findViewById(R.id.players_list)).setOnPlayerNameClickListener(this);
 
         addPlayerET();
+        LaunchActivity.setMaxWidth((ViewGroup) view.findViewById(R.id.root), 800);
         return view;
     }
 
