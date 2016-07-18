@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity
 
         game = new Game();
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.fragment_container, new /*MainFragment()*/ CardSetupFragment())
+                .replace(R.id.fragment_container, new /*MainFragment()*/ CardSetupFragment())
                 .commit();
     }
 

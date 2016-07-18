@@ -1,5 +1,13 @@
 <resources>
     <string name="app_name">Cluedo</string>
+
+    <string name="launch_activity_title">Welcome to Cluedo Assist</string>
+    <string name="launch_activity_description">Always win Cluedo games while using this app</string>
+    <string name="start">Start</string>
+
+    <string name="card_setup_fragment_title">What suspects, weapons and locations does your game use?</string>
+    <string name="or_choose_existing">Translate or change the names as you like</string>
+
     <string name="toggle_immersive_mode">Toggle immersive mode</string>
     <string name="name_of_card">Name of card</string>
     <string name="add_category">Add category</string>
@@ -20,15 +28,11 @@
     <string name="clear_all">Clear all</string>
     <string name="default_setup">Default</string>
     <string name="name_for_card_setup_hint">Enter a name to save this setup</string>
-    <string name="or_choose_existing">Or choose a saved card setup</string>
-    <string name="card_setup_fragment_title">Set up the cards of the game you use</string>
+
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="player_setup_error_message">Please fill all fields.</string>
     <string name="delete_saved_player_confirmation_message">Do you want to delete the player \"%s\"?</string>
     <string name="delete">Delete</string>
     <string name="first_turn_setup_fragment_title">Which player begins?</string>
-    <string name="launch_activity_title">Welcome to Cluedo Assist</string>
-    <string name="launch_activity_description">Always win Cluedo games while using this app</string>
-    <string name="start">Start</string>
 </resources>

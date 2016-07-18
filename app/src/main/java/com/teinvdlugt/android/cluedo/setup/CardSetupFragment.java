@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 
 import com.teinvdlugt.android.cluedo.Category;
 import com.teinvdlugt.android.cluedo.Game;
+import com.teinvdlugt.android.cluedo.LaunchActivity;
 import com.teinvdlugt.android.cluedo.MainActivity;
 import com.teinvdlugt.android.cluedo.R;
 import com.teinvdlugt.android.cluedo.io.CardSetup;
@@ -61,6 +62,9 @@ public class CardSetupFragment extends Fragment {
             }
         });
 
+        loadCardSetup(CardSetup.defaultSetup(getContext())); // TODO: 17-7-2016 Load the last used cardSetup
+
+        LaunchActivity.setMaxWidth((ViewGroup) theView.findViewById(R.id.root), 760);
         return theView;
     }
 
