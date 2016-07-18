@@ -31,7 +31,7 @@
 
     <string name="yes">Yes</string>
     <string name="no">No</string>
-    <string name="player_setup_error_message">Please fill all fields.</string>
+    <string name="player_setup_error_message">Please add at least one player.</string>
     <string name="delete_saved_player_confirmation_message">Do you want to delete the player \"%s\"?</string>
     <string name="delete">Delete</string>
     <string name="first_turn_setup_fragment_title">Which player begins?</string>

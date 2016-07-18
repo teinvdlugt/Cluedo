@@ -9,13 +9,14 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 public abstract class PlayerSetupJSONUtils {
     public static final String PLAYERS_FILE = "players";
     public static final String PLAYER_NAME = "name";
 
-    public static void addPlayers(Context context, String... names) {
-        if (names.length == 0) return;
+    public static void addPlayers(Context context, Set<String> names) {
+        if (names.size() == 0) return;
 
         List<String> savedNames = getPlayers(context);
 

@@ -3,6 +3,7 @@ package com.teinvdlugt.android.cluedo.setup;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 
 import com.teinvdlugt.android.cluedo.LaunchActivity;
 import com.teinvdlugt.android.cluedo.MainActivity;
@@ -18,11 +20,15 @@ import com.teinvdlugt.android.cluedo.R;
 import com.teinvdlugt.android.cluedo.io.PlayerSetupJSONUtils;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class PlayerSetupFragment extends Fragment implements PlayerSetupView.OnPlayerNameClickListener {
 
     private LinearLayout playerETContainer;
     private ArrayList<EditText> playerETs = new ArrayList<>();
+    private ScrollView scrollView;
 
     @Nullable
     @Override
@@ -30,6 +36,8 @@ public class PlayerSetupFragment extends Fragment implements PlayerSetupView.OnP
         View view = inflater.inflate(R.layout.fragment_player_setup, container, false);
 
         playerETContainer = (LinearLayout) view.findViewById(R.id.playerETContainer);
+        scrollView = (ScrollView) view.findViewById(R.id.scrollView);
+        ViewGroup root = (ViewGroup) view.findViewById(R.id.root);
 
         view.findViewById(R.id.doneButton).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,7 +54,7 @@ public class PlayerSetupFragment extends Fragment implements PlayerSetupView.OnP
         ((PlayerSetupView) view.findViewById(R.id.players_list)).setOnPlayerNameClickListener(this);
 
         addPlayerET();
-        LaunchActivity.setMaxWidth((ViewGroup) view.findViewById(R.id.root), 800);
+        LaunchActivity.setMaxWidth(root, 800);
         return view;
     }
 
@@ -83,28 +91,25 @@ public class PlayerSetupFragment extends Fragment implements PlayerSetupView.OnP
     }
 
     private void done() {
-        // Check if input is valid
+        // Create list of player names
+        Set<String> names = new HashSet<>();
         for (EditText playerET : playerETs) {
-            if (playerET.length() == 0) {
-                new AlertDialog.Builder(getContext())
-                        .setMessage(getContext().getString(R.string.player_setup_error_message))
-                        .setPositiveButton(android.R.string.ok, null)
-                        .create().show();
-                return;
-            }
+            String name = playerET.getText().toString();
+            if (name.length() > 0)
+                names.add(name);
+        }
+        if (names.size() == 0) {
+            Snackbar.make(scrollView, R.string.player_setup_error_message, Snackbar.LENGTH_LONG).show();
+            return;
         }
 
         // Create Player objects
         ArrayList<Player> players = new ArrayList<>();
-        for (EditText playerET : playerETs) {
-            players.add(new Player(playerET.getText().toString(), MainActivity.game, 4));
+        for (String name : names) {
+            players.add(new Player(name, MainActivity.game, 4));
         }
 
         // Save names of players
-        String[] names = new String[players.size()];
-        for (int i = 0; i < players.size(); i++) {
-            names[i] = players.get(i).getName();
-        }
         PlayerSetupJSONUtils.addPlayers(getContext(), names);
 
         // Notify listener
